@@ -2,7 +2,7 @@ var bulletTime1 = 0;
 
 var bullet_player1_material = new THREE.MeshLambertMaterial(
 {
-    color: 0x00ff00, 
+    color: 0x00ff00,
     transparent: false
 });
 
@@ -19,7 +19,7 @@ function shoot()
         bullet.angle = player1.direction;
         player1.bullets.push(bullet);
         bulletTime1 = clock.getElapsedTime();
-    } 
+    }
 
     // move bullets
     var moveDistance = 5;
@@ -31,6 +31,8 @@ function shoot()
     }
 
 }
+
+
 
 function collisions()
 {
@@ -51,6 +53,18 @@ function bullet_collision()
             player1.bullets.splice(i, 1);
             i--;
         }
+        try {
+            if (player1.bullets[i].position.x >= bad1.graphic.position.x - 20 && player1.bullets[i].position.x < bad1.graphic.position.x + 20 && player1.bullets[i].position.y >= bad1.graphic.position.y - 20 && player1.bullets[i].position.y < bad1.graphic.position.y + 20)
+            {
+                scene.remove(player1.bullets[i]);
+                player1.bullets.splice(i, 1);
+                bad1.dead()
+                i--;
+            }
+        }catch{
+
+        }
+
     }
 
 }
@@ -60,6 +74,14 @@ function player_collision()
     //collision between player and walls
     var x = player1.graphic.position.x + WIDTH / 2;
     var y = player1.graphic.position.y + HEIGHT / 2;
+    if (player1.graphic.position.x <= -295){
+        player1.graphic.position.x = -295
+        return
+    }
+    if (player1.graphic.position.x >= 193){
+        player1.graphic.position.x = 193
+        return
+    }
 
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
@@ -82,16 +104,22 @@ function player_falling()
 
     for (var i = 0; i < length; i++) {
         element = noGround[i];
-
-        var tileX = (element[0]) | 0;
-        var tileY = (element[1]) | 0;
-        var mtileX = (element[0] + sizeOfTileX) | 0;
-        var mtileY = (element[1] + sizeOfTileY) | 0;
-
-        if ((x > tileX)
-            && (x < mtileX)
-            && (y > tileY) 
-            && (y < mtileY))
+        var tileX = 0;
+        var tileY = 0;
+        var mtileX = 0;
+        var mtileY = 0;
+        try{
+            tileX = (element[0]);
+            tileY = (element[1]);
+            mtileX = (element[0] + sizeOfTileX);
+            mtileY = (element[1] + sizeOfTileY)
+        }catch{
+            //c'est sale mais ca marche ^^
+        }
+        if ((x > tileX - (sizeOfTileX / 2))
+            && (x < mtileX + (sizeOfTileX / 2))
+            && (y > tileY - (sizeOfTileY / 2))
+            && (y < mtileY + (sizeOfTileY / 2)))
         {
            player1.dead();
         }

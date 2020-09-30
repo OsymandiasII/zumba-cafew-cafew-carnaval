@@ -1,4 +1,4 @@
-var Player = function(name, color, position, direction) {
+var Bad = function(name, color, position, direction) {
 
     this.name = name;
     this.position = position;
@@ -19,17 +19,18 @@ var Player = function(name, color, position, direction) {
     this.graphic.position.z = 6;
 
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), this.direction+(3*Math.PI/2));
+    this.start = 0
 };
 
-Player.prototype.dead = function () {
+Bad.prototype.dead = function () {
     this.graphic.position.z = this.graphic.position.z-0.1;
         //Nettoyage de la div container
         $("#container").html("");
-        jQuery('#'+this.name+' >.life').text("Tu es mort !");
-        init();
+        jQuery('#'+player1.name).text("You Win !");
+
 }
 
-Player.prototype.accelerate = function (distance) {
+Bad.prototype.accelerate = function (distance) {
     var max = 2;
 
     this.speed += distance / 4;
@@ -38,7 +39,7 @@ Player.prototype.accelerate = function (distance) {
     }
 };
 
-Player.prototype.decelerate = function (distance) {
+Bad.prototype.decelerate = function (distance) {
     var min = -1;
 
     this.speed -= distance / 16;
@@ -47,25 +48,47 @@ Player.prototype.decelerate = function (distance) {
     }
 };
 
-Player.prototype.displayInfo = function () {
+Bad.prototype.displayInfo = function () {
     jQuery('#'+this.name+' >.life').text(this.life);
 }
 
-Player.prototype.turnRight = function (angle) {
+Bad.prototype.turnRight = function (angle) {
     this.direction -= angle;
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), -angle);
 };
 
-Player.prototype.turnLeft = function (angle) {
+Bad.prototype.turnLeft = function (angle) {
     this.direction += angle;
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), angle);
 };
 
-Player.prototype.move = function () {
+Bad.prototype.move = function () {
+
+    this.accelerate(1)
 
     if (this.position.x <= -295){
-        this.position.x = -295;
+        this.start = 1
+        this.turnLeft(180)
+        this.accelerate(1)
     }
+
+    if (this.position.x >= 290){
+        this.start = 1
+        this.turnLeft(180)
+        this.accelerate(10)
+    }
+    if (this.position.y >= 200){
+        this.start = 1
+        this.turnLeft(180)
+        this.accelerate(10)
+    }
+    if (this.position.y <= -200){
+        this.start = 1
+        this.turnLeft(180)
+        this.accelerate(10)
+    }
+
+
     var moveTo = new THREE.Vector3(
         this.speed * Math.cos(this.direction) + this.position.x,
         this.speed * Math.sin(this.direction) + this.position.y,
@@ -84,7 +107,6 @@ Player.prototype.move = function () {
     this.graphic.position.x = this.position.x;
     this.graphic.position.y = this.position.y;
 
-    light1.position.x = this.position.x;
-    light1.position.y = this.position.y;
+
    //light1.position.z = this.graphic.position.z + 500;
 };

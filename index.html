@@ -4,32 +4,34 @@
     <title>Fluffy Giggle</title>
     <style>
         body {
-            background: #000000; 
+            background: #000000;
         }
 
         #container {
-            margin : auto; 
+            margin : auto;
             border: 1px solid white;
             background: #000000;
         }
-        
+
         #player1 {
-                margin : auto; 
+                margin : auto;
                 text-align: center;
         }
 
         .life {
             color:white;
         }
+        
     </style>
 </head>
 
 <body>
     <div id="container"></div>
-    <div id="player1">
-        <strong>Joueur 1</strong>
+    <div id="player1" style="color:white">
+        <strong>Joueur 1 : </strong>
         <span class="life">3</span> vies
     </div>
+    <button id="button" type="button" style="">New Game</button>
 </body>
 
 <script src="js/three.min.js"></script>
@@ -40,6 +42,7 @@
 <script src="game/graphic.js"></script>
 <script src="game/physic.js"></script>
 <script src="game/shoot.js"></script>
+<script src="game/ennemies.js"></script>
 
 <script type="text/javascript">
     var container, scene, camera, renderer, controls, stats;
@@ -58,6 +61,7 @@
         requestAnimationFrame(animate);
         render();
         update();
+
         player1.displayInfo();
         shoot();
         collisions();
@@ -73,6 +77,9 @@
             .css('width', WIDTH)
             .css('height', HEIGHT)
         ;
+    });
+    $( "#button" ).click(function() {
+         location.reload();
     });
 </script>
 </html>
